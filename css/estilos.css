@@ -1,0 +1,407 @@
+/* ==========================================================
+   ESTILOS · Simulador de Trayectorias Ortogonales
+   Secciones:
+   1) Variables y base        6) Aplicaciones
+   2) Cabecera                7) Reto interactivo
+   3) Pestañas                8) Pie y modal
+   4) Tarjetas y método       9) Responsive y accesibilidad
+   5) Simulador
+   ========================================================== */
+
+/* ---------- 1) VARIABLES Y BASE ---------- */
+:root{
+  --papel:#ffffff;
+  --fondo:#eef3fa;
+  --fondo-2:#f8fafc;
+  --tinta:#14213d;
+  --suave:#5c6b82;
+  --linea:#d8e2f0;
+  --azul:#1f5fd6;
+  --azul-oscuro:#1747a6;
+  --rojo:#d93a3a;
+  --verde:#1a9a5b;
+  --ambar:#d97706;
+  --sombra:0 10px 30px rgba(20,33,61,.08);
+  --sombra-suave:0 4px 14px rgba(20,33,61,.06);
+  --radio:14px;
+  --transicion:.22s ease;
+}
+
+*{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
+body{
+  margin:0;
+  background:
+    radial-gradient(1200px 600px at 10% -10%, #dfe9fb 0%, transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, #fde8e8 0%, transparent 45%),
+    var(--fondo);
+  background-attachment:fixed;
+  color:var(--tinta);
+  font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+}
+
+h1,h2,h3{margin:0; line-height:1.2}
+h2{font-size:1.06rem; margin-bottom:8px}
+h3{font-size:1.02rem; margin-bottom:10px}
+p{margin:8px 0}
+code{background:#eef2f8; padding:1px 5px; border-radius:5px; font-size:.9em}
+kbd{
+  display:inline-block; min-width:24px; text-align:center;
+  padding:1px 6px; border:1px solid var(--linea); border-bottom-width:2px;
+  border-radius:6px; background:#fff; font:600 .8rem/1.5 ui-monospace,monospace;
+}
+
+/* ---------- 2) CABECERA Y TEMPORIZADOR ---------- */
+.cabecera{
+  position:sticky; top:0; z-index:60;
+  background:rgba(255,255,255,.86);
+  backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid var(--linea);
+  box-shadow:0 2px 14px rgba(20,33,61,.04);
+}
+.cabecera-inner{
+  max-width:1280px; margin:0 auto; padding:14px 24px;
+  display:flex; gap:24px; align-items:center; justify-content:space-between; flex-wrap:wrap;
+}
+.titulo{min-width:280px; flex:1 1 420px}
+.etiqueta{
+  margin:0 0 2px; font-size:.72rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--azul);
+}
+h1{font-size:clamp(1.3rem,2.4vw,1.75rem); font-weight:800; letter-spacing:-.02em}
+.subtitulo{margin:4px 0 0; color:var(--suave); font-size:.92rem; max-width:72ch}
+
+.herramientas{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+
+.botones-cabecera{display:flex; gap:8px; align-items:center}
+.herramienta{
+  font:600 .82rem/1 inherit; padding:9px 12px; border-radius:9px;
+  border:1px solid var(--linea); background:var(--papel); color:var(--tinta);
+  cursor:pointer; transition:all var(--transicion);
+}
+.herramienta:hover{border-color:var(--azul); color:var(--azul); transform:translateY(-1px)}
+.herramienta.icono{width:38px; height:38px; padding:0; font-size:1.05rem; display:grid; place-items:center}
+
+/* ---------- 3) PESTAÑAS ---------- */
+.pestanas{
+  max-width:1280px; margin:0 auto; padding:14px 24px 0;
+  display:flex; gap:6px; flex-wrap:wrap;
+}
+.pestanas button{
+  border:1px solid transparent; background:transparent; padding:11px 16px;
+  border-radius:10px 10px 0 0; font:600 .9rem/1 inherit; color:var(--suave);
+  cursor:pointer; position:relative; transition:all var(--transicion);
+}
+.pestanas button:hover{background:rgba(255,255,255,.7); color:var(--tinta)}
+.pestanas button.activa{
+  background:var(--papel); color:var(--azul);
+  border-color:var(--linea); border-bottom-color:transparent;
+  box-shadow:0 -3px 0 var(--azul) inset;
+}
+.panel-tab{display:none}
+.panel-tab.visible{display:block; animation:aparecer .3s ease}
+@keyframes aparecer{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+/* ---------- 4) TARJETAS Y MÉTODO ---------- */
+main{max-width:1280px; margin:0 auto; padding:16px 24px 40px}
+.tarjeta{
+  background:var(--papel); border:1px solid var(--linea); border-radius:var(--radio);
+  padding:18px; margin-bottom:16px; box-shadow:var(--sombra-suave);
+}
+.chip{
+  display:inline-block; font-size:.68rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--azul); background:#e8f0ff;
+  padding:3px 9px; border-radius:999px; margin-bottom:8px;
+}
+.entrada{color:var(--suave)}
+.intro-metodo{border-left:5px solid var(--azul)}
+.ecuacion{
+  font-size:1.22rem; text-align:center; margin:12px 0;
+  color:var(--tinta); overflow-x:auto; overflow-y:hidden; padding:2px 0;
+}
+.ecuacion.destacada{
+  background:linear-gradient(180deg,#f7faff,#eef4ff);
+  border:1px dashed #b9cdf5; border-radius:10px; padding:10px 8px;
+}
+.nota-expositor{
+  margin-top:12px; padding:10px 12px; border-radius:9px;
+  background:#fff8e8; border:1px solid #f3d9a4; color:#7a5310; font-size:.9rem;
+}
+.nota-expositor b{color:#8a5b06}
+
+.navegacion-metodo{padding:14px 18px}
+.pasos-chips{display:grid; grid-template-columns:repeat(3,1fr); gap:8px}
+.paso-chip{
+  display:flex; align-items:center; gap:9px; justify-content:flex-start;
+  padding:9px 12px; border-radius:10px; border:1px solid var(--linea);
+  background:var(--fondo-2); color:var(--suave); font:600 .86rem/1 inherit;
+  cursor:pointer; transition:all var(--transicion);
+}
+.paso-chip b{
+  display:grid; place-items:center; width:24px; height:24px; border-radius:50%;
+  background:#e4ebf7; color:var(--suave); font-size:.78rem; flex:none;
+  transition:all var(--transicion);
+}
+.paso-chip:hover{border-color:var(--azul); color:var(--azul)}
+.paso-chip.activa{background:#e8f0ff; border-color:var(--azul); color:var(--azul-oscuro)}
+.paso-chip.activa b{background:var(--azul); color:#fff}
+.paso-chip.hecha b{background:var(--verde); color:#fff}
+
+.barra-progreso{height:6px; background:#e8eef8; border-radius:999px; margin:12px 0; overflow:hidden}
+.barra-progreso span{
+  display:block; height:100%; width:0; border-radius:inherit;
+  background:linear-gradient(90deg,var(--azul),#5b8def);
+  transition:width .35s ease;
+}
+.contador-pasos{margin-left:auto; align-self:center; font-size:.82rem; color:var(--suave); font-weight:600}
+
+.paso{display:none; border-left:5px solid var(--azul); animation:aparecer .3s ease; scroll-margin-top:150px}
+.paso.visible{display:block}
+#paso2.visible{border-left-color:var(--rojo)}
+#paso3.visible{border-left-color:var(--verde)}
+.paso .num{
+  display:inline-grid; place-items:center; width:28px; height:28px; border-radius:50%;
+  background:var(--azul); color:#fff; font-size:.85rem; margin-right:8px; vertical-align:middle;
+}
+#paso2 .num{background:var(--rojo)}
+#paso3 .num{background:var(--verde)}
+
+/* ---------- 5) SIMULADOR ---------- */
+.rejilla{display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:20px; align-items:start}
+.tarjeta-grafico{padding:14px}
+.grafico-cabecera{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap; margin-bottom:10px}
+.grafico-cabecera h2{margin:0}
+.pista{margin:0; font-size:.82rem; color:var(--suave)}
+#box{
+  width:100%; height:clamp(420px,66vh,720px);
+  border-radius:10px; overflow:hidden; background:#fff;
+  border:1px solid #eaf0f8;
+}
+
+.lateral .tarjeta:last-child{margin-bottom:0}
+.ctl{margin:12px 0 6px}
+.ctl label{display:flex; justify-content:space-between; align-items:baseline; gap:10px; font-weight:600; font-size:.92rem}
+.ctl output{
+  font-variant-numeric:tabular-nums; background:#eef3fb; color:var(--azul-oscuro);
+  padding:1px 8px; border-radius:6px; font-size:.85rem;
+}
+input[type=range]{
+  width:100%; height:34px; margin:2px 0 0; cursor:pointer;
+  accent-color:var(--azul);
+}
+#sx{accent-color:var(--verde)}
+.check{display:flex; align-items:center; gap:8px; margin:9px 0; cursor:pointer; font-size:.92rem}
+.check input{width:17px; height:17px; accent-color:var(--azul); cursor:pointer}
+
+.leyenda{display:flex; flex-direction:column; gap:7px; font-size:.9rem}
+.leyenda span::before{
+  content:""; display:inline-block; width:26px; height:4px; border-radius:2px;
+  margin-right:9px; vertical-align:middle; background:var(--c);
+}
+.ec{
+  font-family:Cambria,"Times New Roman",serif; font-size:1.05rem; margin:6px 0 0;
+  color:var(--suave);
+}
+.res{display:grid; grid-template-columns:1fr auto; gap:6px 12px; font-size:.9rem}
+.res span{color:var(--suave)}
+.res b{
+  font-variant-numeric:tabular-nums; text-align:right;
+  background:#f4f7fc; padding:1px 8px; border-radius:6px; color:var(--tinta);
+}
+.ok{
+  margin-top:10px; padding:9px 11px; border-radius:9px;
+  background:#e8f6ee; color:#10613a; font-weight:600; font-size:.88rem;
+  border:1px solid #c4e8d5; transition:all var(--transicion);
+}
+.ok.alerta{background:#fdeaea; color:#8b1e1e; border-color:#f3c1c1}
+
+/* ---------- BOTONES ---------- */
+.btns{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+button{font:inherit}
+.btns button, .herramienta, .paso-chip, .pestanas button, .opciones button{
+  transition:all var(--transicion);
+}
+.btns button{
+  padding:8px 12px; border:1px solid var(--linea); background:var(--papel);
+  border-radius:8px; cursor:pointer; color:var(--tinta); font-size:.86rem; font-weight:600;
+}
+.btns button:hover:not(:disabled){border-color:var(--azul); color:var(--azul); transform:translateY(-1px)}
+.btns button.primario{background:var(--azul); color:#fff; border-color:var(--azul)}
+.btns button.primario:hover:not(:disabled){background:var(--azul-oscuro); color:#fff}
+.btns button.secundario{background:#f4f7fc}
+.btns button:disabled{opacity:.45; cursor:not-allowed; transform:none}
+button:focus-visible, input:focus-visible, select:focus-visible{
+  outline:3px solid #8fb3ff; outline-offset:2px;
+}
+
+/* ---------- 6) APLICACIONES ---------- */
+.rejilla-aplicaciones{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px}
+.app-card{margin:0; transition:transform var(--transicion), box-shadow var(--transicion)}
+.app-card:hover{transform:translateY(-3px); box-shadow:var(--sombra)}
+.app-card svg{width:100%; height:auto; display:block; border-radius:10px; border:1px solid #eaf0f8; margin-bottom:10px; overflow:hidden}
+.app-card h3{color:var(--azul-oscuro); font-size:.98rem}
+.app-card p{margin:0; color:var(--suave); font-size:.9rem}
+
+/* Animaciones e interacción de las aplicaciones */
+.app-card .zona-carga{cursor:grab; touch-action:none}
+.app-card .zona-carga:active{cursor:grabbing}
+.app-card .campo line{
+  stroke-dasharray:4 9;
+  animation:campoFlujo 1.6s linear infinite;
+}
+.app-card .equi{animation:equiPulso 3.2s ease-in-out infinite}
+.app-card .halo{
+  transform-box:fill-box; transform-origin:center;
+  animation:halo 2.4s ease-out infinite;
+}
+.app-card .flujo path{
+  stroke-dasharray:8 8;
+  animation:fluir var(--dur,2s) linear infinite;
+}
+.app-card .particula{
+  animation:particula var(--dur,2s) linear infinite;
+}
+.app-card .niveles{
+  transform-box:fill-box; transform-origin:center;
+  animation:respirar 6s ease-in-out infinite;
+}
+.app-card .niveles ellipse{animation:nivelPulso 4s ease-in-out infinite}
+.app-card .grad-grupo{opacity:0; transition:opacity .35s ease}
+.app-card.mostrar-grad .grad-grupo{opacity:1}
+.app-card .marcador{opacity:0}
+.app-card.mostrar-grad .marcador{
+  opacity:1;
+  animation:marcadorViaje 1.8s ease-in-out infinite;
+}
+.app-card .calor line{
+  stroke-dasharray:8 8;
+  animation:calorFlujo 1.2s linear infinite;
+}
+.app-card .particula-calor{animation:particulaCalor 1.6s linear infinite}
+.app-card.invertido .calor line,
+.app-card.invertido .particula-calor{animation-direction:reverse}
+.app-card.invertido .fondo-calor{fill:url(#gradCalorInv)}
+
+@keyframes campoFlujo{to{stroke-dashoffset:-26}}
+@keyframes equiPulso{0%,100%{stroke-opacity:.55}50%{stroke-opacity:1}}
+@keyframes halo{0%{transform:scale(.6); opacity:.35}100%{transform:scale(1.9); opacity:0}}
+@keyframes fluir{to{stroke-dashoffset:-48}}
+@keyframes particula{
+  0%{transform:translateX(-20px); opacity:0}
+  12%{opacity:1}
+  88%{opacity:1}
+  100%{transform:translateX(235px); opacity:0}
+}
+@keyframes nivelPulso{0%,100%{opacity:.6}50%{opacity:1}}
+@keyframes respirar{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes marcadorViaje{
+  0%{transform:translateY(0); opacity:0}
+  15%{opacity:1}
+  85%{opacity:1}
+  100%{transform:translateY(-50px); opacity:0}
+}
+@keyframes calorFlujo{to{stroke-dashoffset:-48}}
+@keyframes particulaCalor{
+  0%{transform:translateX(-20px); opacity:0}
+  12%{opacity:1}
+  88%{opacity:1}
+  100%{transform:translateX(235px); opacity:0}
+}
+
+.app-control{
+  display:flex; align-items:center; gap:9px; margin-top:10px;
+  font-size:.82rem; color:var(--suave); font-weight:600;
+}
+.app-control input[type=range]{flex:1; height:26px; margin:0; accent-color:var(--azul)}
+.app-slider-out{
+  font-variant-numeric:tabular-nums; color:var(--azul-oscuro);
+  background:#eef3fb; padding:1px 7px; border-radius:6px; font-size:.78rem;
+}
+.app-btn{
+  margin-top:10px; font:600 .82rem/1 inherit; padding:8px 11px;
+  border:1px solid var(--linea); background:var(--fondo-2); border-radius:8px;
+  cursor:pointer; color:var(--tinta);
+}
+.app-btn:hover{border-color:var(--azul); color:var(--azul)}
+.app-btn[aria-pressed="true"]{background:var(--azul); color:#fff; border-color:var(--azul)}
+.app-card .app-hint{margin:8px 0 0; font-size:.79rem; color:var(--suave); font-style:italic}
+
+/* ---------- 7) RETO ---------- */
+.quiz-cabecera{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-top:12px}
+.puntaje{
+  font-weight:700; font-size:.92rem; color:var(--azul-oscuro);
+  background:#e8f0ff; padding:6px 12px; border-radius:999px;
+}
+.pregunta{margin-bottom:14px}
+.enunciado{font-size:1rem; margin:0 0 12px}
+.opciones{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px}
+.opciones button{
+  text-align:left; padding:10px 12px; border:1px solid var(--linea);
+  background:var(--fondo-2); border-radius:9px; cursor:pointer; color:var(--tinta);
+  font-size:.92rem; min-height:46px;
+}
+.opciones button:hover:not(:disabled){border-color:var(--azul); background:#eef4ff}
+.opciones button:disabled{cursor:default; opacity:1}
+.opciones button.correcta{background:#e8f6ee; border-color:var(--verde); color:#10613a; font-weight:700}
+.opciones button.incorrecta{background:#fdeaea; border-color:var(--rojo); color:#8b1e1e; font-weight:700}
+.explicacion{
+  margin:12px 0 0; padding:10px 12px; border-radius:9px;
+  background:#f4f7fc; border-left:4px solid var(--azul); font-size:.9rem; color:var(--suave);
+}
+.explicacion[hidden]{display:none}
+
+/* ---------- 8) PIE Y MODAL ---------- */
+.pie{
+  max-width:1280px; margin:0 auto; padding:18px 24px 28px;
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  color:var(--suave); font-size:.8rem;
+}
+.estado-libs::before{content:"●"; margin-right:6px; color:var(--ambar)}
+.estado-libs.lista::before{color:var(--verde)}
+.estado-libs.error::before{color:var(--rojo)}
+
+.modal{
+  position:fixed; inset:0; z-index:100; display:grid; place-items:center;
+  background:rgba(20,33,61,.5); backdrop-filter:blur(4px); padding:20px;
+  animation:aparecer .2s ease;
+}
+.modal[hidden]{display:none}
+.modal-caja{
+  position:relative; background:var(--papel); border-radius:16px;
+  max-width:640px; width:100%; max-height:86vh; overflow:auto;
+  padding:26px 26px 22px; box-shadow:0 24px 60px rgba(20,33,61,.28);
+}
+.modal-caja h2{margin-bottom:10px; font-size:1.2rem}
+.modal-caja h3{margin:18px 0 8px; color:var(--azul-oscuro); font-size:.98rem}
+.modal-caja p{color:var(--suave); font-size:.92rem}
+.cerrar{
+  position:absolute; top:10px; right:12px; width:34px; height:34px;
+  border-radius:50%; border:none; background:#f1f5fb; color:var(--suave);
+  font-size:1.3rem; cursor:pointer; line-height:1;
+}
+.cerrar:hover{background:#e3ebf7; color:var(--tinta)}
+.guion, .atajos{margin:0; padding-left:20px; color:var(--suave); font-size:.9rem}
+.guion li, .atajos li{margin:6px 0}
+.guion b{color:var(--tinta)}
+
+/* ---------- 9) RESPONSIVE Y ACCESIBILIDAD ---------- */
+@media (max-width:1040px){
+  .rejilla{grid-template-columns:1fr}
+  .lateral{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+  .lateral .tarjeta{margin-bottom:0}
+}
+@media (max-width:720px){
+  .cabecera-inner{padding:12px 16px}
+  .herramientas{width:100%; justify-content:space-between}
+  .pestanas, main, .pie{padding-left:16px; padding-right:16px}
+  .pasos-chips{grid-template-columns:1fr}
+  .rejilla-aplicaciones, .opciones, .lateral{grid-template-columns:1fr}
+  .contador-pasos{margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none !important; transition:none !important; scroll-behavior:auto !important}
+}
