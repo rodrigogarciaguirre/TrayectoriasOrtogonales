@@ -1,28 +1,86 @@
 /* ==========================================================
-   INTERFAZ · pantalla completa, ayuda, atajos y estado offline
+   INTERFAZ · pantalla completa, modo proyector, ayuda,
+   atajos y estado offline.
    ========================================================== */
 (function () {
 
   var $ = function (id) { return document.getElementById(id); };
 
+  function entrarPantallaCompleta() {
+    var raiz = document.documentElement;
+    if (raiz.requestFullscreen) {
+      var p = raiz.requestFullscreen();
+      if (p && p.catch) p.catch(function () {});
+    }
+  }
+
+  function salirPantallaCompleta() {
+    if (document.exitFullscreen) {
+      var p = document.exitFullscreen();
+      if (p && p.catch) p.catch(function () {});
+    }
+  }
+
+  function redimensionarDiferido() {
+    [60, 250, 500, 900].forEach(function (ms) {
+      setTimeout(function () { Simulador.redimensionar(); }, ms);
+    });
+  }
+
   /* ---------- 1) PANTALLA COMPLETA ---------- */
   var bPantalla = $('bPantalla');
 
   function alternarPantalla() {
-    var raiz = document.documentElement;
-    if (!document.fullscreenElement) {
-      if (raiz.requestFullscreen) raiz.requestFullscreen().catch(function () {});
-    } else if (document.exitFullscreen) {
-      document.exitFullscreen();
-    }
+    if (!document.fullscreenElement) entrarPantallaCompleta();
+    else salirPantallaCompleta();
   }
 
   if (bPantalla) bPantalla.addEventListener('click', alternarPantalla);
+
+  /* ---------- 2) MODO PROYECTOR ---------- */
+  var bProyector = $('bProyector');
+  var bProyectorSim = $('bProyectorSim');
+
+  function proyectorActivo() {
+    return document.body.classList.contains('modo-proyector');
+  }
+
+  function actualizarBotonesProyector(activo) {
+    if (bProyector) bProyector.textContent = activo ? 'Salir del proyector' : '⛶ Modo Proyector';
+    if (bProyectorSim) bProyectorSim.textContent = activo ? '✕ Salir del proyector' : '⛶ Modo Proyector';
+  }
+
+  function desactivarProyector() {
+    if (!proyectorActivo()) return;
+    document.body.classList.remove('modo-proyector');
+    actualizarBotonesProyector(false);
+    redimensionarDiferido();
+  }
+
+  function alternarProyector() {
+    var activo = !proyectorActivo();
+    document.body.classList.toggle('modo-proyector', activo);
+    actualizarBotonesProyector(activo);
+
+    if (activo) {
+      // El modo proyector siempre muestra la simulación.
+      if (typeof Pestanas !== 'undefined') Pestanas.abrir('simulador');
+      if (!document.fullscreenElement) entrarPantallaCompleta();
+    } else if (document.fullscreenElement) {
+      salirPantallaCompleta();
+    }
+    redimensionarDiferido();
+  }
+
+  if (bProyector) bProyector.addEventListener('click', alternarProyector);
+  if (bProyectorSim) bProyectorSim.addEventListener('click', alternarProyector);
+
   document.addEventListener('fullscreenchange', function () {
-    setTimeout(function () { Simulador.redimensionar(); }, 200);
+    if (!document.fullscreenElement && proyectorActivo()) desactivarProyector();
+    redimensionarDiferido();
   });
 
-  /* ---------- 2) AYUDA ---------- */
+  /* ---------- 3) AYUDA ---------- */
   var modal = $('modalAyuda');
   var bAyuda = $('bAyuda');
   var bCerrar = $('bCerrarAyuda');
@@ -40,8 +98,8 @@
     });
   }
 
-  /* ---------- 3) ATAJOS DE TECLADO ---------- */
-  var orden = ['metodo', 'simulador', 'aplicaciones', 'reto'];
+  /* ---------- 4) ATAJOS DE TECLADO ---------- */
+  var orden = ['metodo', 'simulador', 'aplicaciones'];
 
   document.addEventListener('keydown', function (e) {
     var t = e.target;
@@ -54,14 +112,20 @@
 
     var tecla = e.key;
 
-    if (tecla === 'Escape') { cerrarAyuda(); return; }
+    if (tecla === 'Escape') {
+      cerrarAyuda();
+      desactivarProyector();
+      return;
+    }
 
-    if (tecla === '1' || tecla === '2' || tecla === '3' || tecla === '4') {
-      Pestanas.abrir(orden[parseInt(tecla, 10) - 1]);
+    if (tecla === '1' || tecla === '2' || tecla === '3') {
+      var destino = orden[parseInt(tecla, 10) - 1];
+      if (destino) Pestanas.abrir(destino);
       e.preventDefault();
       return;
     }
 
+    if (tecla === 'p' || tecla === 'P') { alternarProyector(); e.preventDefault(); return; }
     if (tecla === 'f' || tecla === 'F') { alternarPantalla(); e.preventDefault(); return; }
     if (tecla === '?' || tecla === 'h' || tecla === 'H') {
       modal && modal.hidden ? abrirAyuda() : cerrarAyuda();
@@ -75,7 +139,7 @@
     }
   });
 
-  /* ---------- 4) ESTADO DE LAS LIBRERÍAS LOCALES ---------- */
+  /* ---------- 5) ESTADO DE LAS LIBRERÍAS LOCALES ---------- */
   function comprobarLibrerias() {
     var estado = $('estadoLibs');
     if (!estado) return;

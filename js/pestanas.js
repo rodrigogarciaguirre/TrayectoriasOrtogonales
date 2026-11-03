@@ -1,5 +1,5 @@
 /* ==========================================================
-   PESTAÑAS · navegación entre las cuatro secciones
+   PESTAÑAS · navegación entre las tres secciones
    ========================================================== */
 var Pestanas = (function () {
 

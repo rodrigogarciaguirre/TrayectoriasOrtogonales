@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Trayectorias Ortogonales · Simulador didáctico (Matemática IV)</title>
+<title>Trayectorias Ortogonales · Rectas vs Círculos (Matemática IV)</title>
 
 <!--
   Librerías locales: la presentación funciona SIN internet.
@@ -34,11 +34,12 @@
     <div class="titulo">
       <p class="etiqueta">Matemática IV · Ecuaciones diferenciales</p>
       <h1>Trayectorias Ortogonales</h1>
-      <p class="subtitulo">Dos familias que se cortan siempre a 90°: las parábolas <i>y = kx²</i> y las elipses <i>x² + 2y² = C</i>.</p>
+      <p class="subtitulo">Dos familias ortogonales: rectas <i>y = cx</i> y circunferencias <i>x² + y² = k</i>.</p>
     </div>
 
     <div class="herramientas">
       <div class="botones-cabecera">
+        <button id="bProyector" class="herramienta proyector-btn" title="Modo proyector (P)">⛶ Modo Proyector</button>
         <button id="bPantalla" class="herramienta icono" title="Pantalla completa (F)" aria-label="Pantalla completa">⛶</button>
         <button id="bAyuda" class="herramienta icono" title="Atajos y guion (?)" aria-label="Ayuda">?</button>
       </div>
@@ -48,10 +49,9 @@
 
 <!-- ================= PESTAÑAS ================= -->
 <nav class="pestanas" role="tablist" aria-label="Secciones de la exposición">
-  <button role="tab" class="activa" data-tab="metodo" aria-selected="true">1. Método matemático</button>
-  <button role="tab" data-tab="simulador" aria-selected="false">2. Simulador visual</button>
+  <button role="tab" class="activa" data-tab="metodo" aria-selected="true">1. Método Matemático</button>
+  <button role="tab" data-tab="simulador" aria-selected="false">2. Simulación Visual</button>
   <button role="tab" data-tab="aplicaciones" aria-selected="false">3. Aplicaciones</button>
-  <button role="tab" data-tab="reto" aria-selected="false">4. Reto interactivo</button>
 </nav>
 
 <main>
@@ -62,17 +62,25 @@
       <span class="chip">Planteamiento</span>
       <h2>El problema</h2>
       <p>
-        Tenemos la familia de parábolas <b>\( y = kx^2 \)</b>. Queremos encontrar otra familia de curvas
-        que corte a <i>todas</i> esas parábolas en ángulo recto. A esas curvas se les llama
+        Tenemos la familia de rectas <b>\( y = cx \)</b> que pasan por el origen. Queremos encontrar
+        otra familia de curvas que corte a <i>todas</i> esas rectas en ángulo recto. A esas curvas se les llama
         <b>trayectorias ortogonales</b>.
       </p>
-      <p class="ecuacion">\( y = kx^2 \quad\longrightarrow\quad ? \)</p>
-      <p class="nota-expositor"><b>Para explicar:</b> la idea es pasar de una familia con un parámetro \(k\) a una ecuación diferencial, y luego “girar” las pendientes 90°.</p>
+      <p class="ecuacion">\( y = cx \quad\longrightarrow\quad ? \)</p>
+      <p>
+        <b>Este es el ejercicio base de la exposición</b> (Becerril y Martínez, pág. 91).
+        Las trayectorias ortogonales de las rectas que pasan por el origen son
+        <b>circunferencias concéntricas</b> con centro en el origen.
+      </p>
+      <div class="btns">
+        <button id="bCargarBase" class="primario">Cargar Ejercicio Base (Rectas y Círculos)</button>
+      </div>
+      <p class="nota-expositor"><b>Para explicar:</b> la idea es pasar de una familia con un parámetro \(c\) a una ecuación diferencial, y luego “girar” las pendientes 90°.</p>
     </div>
 
     <div class="tarjeta navegacion-metodo">
       <div class="pasos-chips" role="group" aria-label="Pasos del método">
-        <button class="paso-chip" data-paso="1"><b>1</b><span>Derivar</span></button>
+        <button class="paso-chip" data-paso="1"><b>1</b><span>Derivar y eliminar c</span></button>
         <button class="paso-chip" data-paso="2"><b>2</b><span>Regla ortogonal</span></button>
         <button class="paso-chip" data-paso="3"><b>3</b><span>Integrar</span></button>
       </div>
@@ -87,34 +95,34 @@
 
     <div class="tarjeta paso" id="paso1">
       <h3><span class="num">1</span> Ecuación diferencial de la familia</h3>
-      <p>Derivamos la ecuación original respecto a <i>x</i>:</p>
-      <p class="ecuacion">\( y = kx^2 \;\Longrightarrow\; y' = 2kx \)</p>
-      <p>Despejamos \(k\) y la eliminamos sustituyendo en la ecuación original:</p>
-      <p class="ecuacion">\( k = \dfrac{y'}{2x} \;\Longrightarrow\; y = \dfrac{y'}{2x}\,x^2 = \dfrac{x\,y'}{2} \)</p>
-      <p class="ecuacion destacada">\( \boxed{\,y' = \dfrac{2y}{x}\,} \)</p>
-      <p class="nota-expositor"><b>Para explicar:</b> ya no aparece \(k\). Esta ecuación diferencial describe a <i>todas</i> las parábolas de la familia a la vez.</p>
+      <p>Partimos de la familia de rectas y derivamos respecto a <i>x</i>:</p>
+      <p class="ecuacion">\( y = cx \;\Longrightarrow\; y' = c \)</p>
+      <p>Como \( c = \dfrac{y}{x} \), eliminamos el parámetro sustituyendo en la derivada:</p>
+      <p class="ecuacion">\( y' = c = \dfrac{y}{x} \)</p>
+      <p class="ecuacion destacada">\( \boxed{\,y' = \dfrac{y}{x}\,} \)</p>
+      <p class="nota-expositor"><b>Para explicar:</b> ya no aparece \(c\). Esta ecuación diferencial describe a <i>todas</i> las rectas de la familia a la vez.</p>
     </div>
 
     <div class="tarjeta paso" id="paso2">
       <h3><span class="num">2</span> Regla ortogonal</h3>
       <p>Dos rectas son perpendiculares si el producto de sus pendientes es \(-1\). Por tanto, la pendiente ortogonal es el negativo del recíproco:</p>
       <p class="ecuacion">\( m_1m_2 = -1 \;\Longrightarrow\; y'_{\text{ort}} = -\dfrac{1}{y'} \)</p>
-      <p>Sustituimos \(y' = \dfrac{2y}{x}\):</p>
-      <p class="ecuacion">\( y' = -\dfrac{1}{\left(\dfrac{2y}{x}\right)} = -\dfrac{x}{2y} \)</p>
-      <p class="ecuacion destacada">\( \boxed{\,y' = -\dfrac{x}{2y}\,} \)</p>
+      <p>Sustituimos \(y' = \dfrac{y}{x}\):</p>
+      <p class="ecuacion">\( y'_{\text{ort}} = -\dfrac{1}{\left(\dfrac{y}{x}\right)} = -\dfrac{x}{y} \)</p>
+      <p class="ecuacion destacada">\( \boxed{\,y' = -\dfrac{x}{y}\,} \)</p>
       <p class="nota-expositor"><b>Para explicar:</b> este es el “giro” de 90°. Ahora resolvemos esta nueva ecuación diferencial.</p>
     </div>
 
     <div class="tarjeta paso" id="paso3">
       <h3><span class="num">3</span> Resolver la ecuación</h3>
       <p>Separamos variables:</p>
-      <p class="ecuacion">\( 2y\,dy = -x\,dx \)</p>
+      <p class="ecuacion">\( y\,dy = -x\,dx \)</p>
       <p>Integramos ambos lados:</p>
-      <p class="ecuacion">\( \displaystyle\int 2y\,dy = \int -x\,dx \;\Longrightarrow\; y^2 = -\dfrac{x^2}{2} + C_1 \)</p>
+      <p class="ecuacion">\( \displaystyle\int y\,dy = \int -x\,dx \;\Longrightarrow\; \dfrac{y^2}{2} = -\dfrac{x^2}{2} + C \)</p>
       <p>Multiplicamos por 2 y renombramos la constante:</p>
-      <p class="ecuacion">\( 2y^2 = -x^2 + 2C_1 \;\Longrightarrow\; \boxed{\,x^2 + 2y^2 = C\,} \)</p>
-      <p>La solución es una familia de <b>elipses</b>. Compruébalo en la pestaña “Simulador visual”.</p>
-      <p class="nota-expositor"><b>Para explicar:</b> cada elipse corta a cada parábola en ángulo recto. La simulación lo verifica punto por punto.</p>
+      <p class="ecuacion">\( y^2 = -x^2 + 2C \;\Longrightarrow\; \boxed{\,x^2 + y^2 = k\,} \)</p>
+      <p>La solución es una familia de <b>circunferencias concéntricas</b> con centro en el origen, donde \(k = 2C\). Compruébalo en la pestaña “Simulación Visual”.</p>
+      <p class="nota-expositor"><b>Para explicar:</b> cada circunferencia corta a cada recta en ángulo recto. La simulación lo verifica punto por punto.</p>
     </div>
   </section>
 
@@ -123,8 +131,11 @@
     <div class="rejilla">
       <div class="tarjeta tarjeta-grafico">
         <div class="grafico-cabecera">
-          <h2>Plano interactivo</h2>
-          <p class="pista">Arrastra el punto <b>P</b> sobre la parábola o usa los controles.</p>
+          <div>
+            <h2>Simulador: Trayectorias Ortogonales (Rectas vs Círculos)</h2>
+            <p class="pista">Arrastra el punto <b>P</b> sobre la circunferencia o usa los controles.</p>
+          </div>
+          <button id="bProyectorSim" class="herramienta proyector-btn">⛶ Modo Proyector</button>
         </div>
         <div id="box"></div>
       </div>
@@ -133,21 +144,27 @@
         <div class="tarjeta">
           <h2>Controles</h2>
           <div class="ctl">
-            <label for="sk"><span>Parábola: valor de k</span><output id="vk">0.50</output></label>
-            <input id="sk" type="range" min="0.1" max="1.5" step="0.01" value="0.5">
+            <label for="sc"><span>Recta: pendiente c</span><output id="vc">1.0</output></label>
+            <input id="sc" type="range" min="-5" max="5" step="0.1" value="1">
           </div>
           <div class="ctl">
-            <label for="sx"><span>Punto de cruce: x₀</span><output id="vx">1.20</output></label>
-            <input id="sx" type="range" min="0.3" max="3" step="0.01" value="1.2">
+            <label for="sk"><span>Circunferencia: constante k</span><output id="vk">3.0</output></label>
+            <input id="sk" type="range" min="1" max="25" step="0.5" value="3">
+          </div>
+          <div class="ctl">
+            <label for="selBase"><span>Ejemplo</span></label>
+            <select id="selBase" class="selector">
+              <option value="base" selected>Ejercicio base del libro (Pág. 91)</option>
+              <option value="personalizado">Personalizado</option>
+            </select>
           </div>
 
-          <label class="check"><input type="checkbox" id="cGrad"> Mostrar vectores gradiente</label>
+          <label class="check"><input type="checkbox" id="cFam" checked> Mostrar familias de fondo</label>
+          <label class="check"><input type="checkbox" id="cTan" checked> Mostrar tangentes en P</label>
           <label class="check"><input type="checkbox" id="cAng" checked> Mostrar ángulo de 90°</label>
 
           <div class="btns">
-            <button id="bFam" aria-pressed="true">Ocultar familias</button>
-            <button id="bAnim">▶ Animar k</button>
-            <button id="bRecorrer">▶ Recorrer P</button>
+            <button id="bAnim">▶ Animar c</button>
             <button id="bReset">Reiniciar</button>
           </div>
         </div>
@@ -155,24 +172,24 @@
         <div class="tarjeta">
           <h2>Qué estás viendo</h2>
           <div class="leyenda">
-            <span style="--c:var(--azul)">Parábola y = kx² (resaltada)</span>
-            <span style="--c:var(--rojo)">Elipse ortogonal x² + 2y² = C</span>
+            <span style="--c:var(--azul)">Recta resaltada y = cx</span>
+            <span style="--c:var(--rojo)">Circunferencia x² + y² = k</span>
             <span style="--c:var(--verde)">Tangentes en el punto P</span>
           </div>
-          <p class="ec" id="eqPar"></p>
-          <p class="ec" id="eqEli"></p>
+          <p class="ec" id="eqRecta"></p>
+          <p class="ec" id="eqCirc"></p>
+          <p class="ecnota" id="puntoInfo"></p>
         </div>
 
         <div class="tarjeta">
           <h2>Comprobación en el punto P</h2>
           <div class="res">
-            <span>Pendiente parábola m₁ = 2kx₀</span><b id="m1"></b>
-            <span>Pendiente elipse m₂ = −x₀/(2y₀)</span><b id="m2"></b>
+            <span>Pendiente recta m₁ = c</span><b id="m1"></b>
+            <span>Pendiente circunferencia m₂ = −x₀/y₀</span><b id="m2"></b>
             <span>Producto m₁ · m₂</span><b id="mp"></b>
-            <span>Gradientes ∇F · ∇G</span><b id="gp"></b>
             <span>Ángulo entre tangentes</span><b id="ang"></b>
           </div>
-          <div class="ok" id="estadoOrt">Producto = −1: las curvas son perpendiculares.</div>
+          <div class="ok" id="estadoOrt">Producto = −1 (90° exactos)</div>
         </div>
       </aside>
     </div>
@@ -183,53 +200,53 @@
     <div class="tarjeta">
       <span class="chip">Contexto real</span>
       <h2>Dónde aparecen las trayectorias ortogonales</h2>
-      <p class="entrada">Siempre que dos magnitudes físicas son independientes y sus curvas se cruzan en ángulo recto, aparece este mismo método. Cada tarjeta es interactiva: arrastra la carga, cambia la velocidad del flujo, muestra el gradiente o invierte el calor.</p>
+      <p class="entrada">Siempre que dos magnitudes físicas son independientes y sus curvas se cruzan en ángulo recto, aparece este mismo método. Las líneas de campo eléctrico (rectas) y las líneas equipotenciales (circunferencias) son el ejemplo perfecto del ejercicio \(y=cx\) vs \(x^2+y^2=k\). Cada tarjeta es interactiva: arrastra la carga, cambia la velocidad del flujo, muestra el gradiente o invierte el calor.</p>
     </div>
 
     <div class="rejilla-aplicaciones">
       <article class="tarjeta app-card" data-app="electrico">
         <svg viewBox="0 0 220 150" role="img" aria-label="Líneas de campo eléctrico y equipotenciales">
-          <rect width="220" height="150" rx="10" fill="#f8fafc"/>
+          <rect width="220" height="150" rx="10" fill="#0b1220"/>
           <g class="campo-grupo">
             <g fill="none" stroke-width="2">
-              <circle class="equi" cx="110" cy="75" r="18" stroke="#d93a3a" stroke-dasharray="4 4"/>
-              <circle class="equi" cx="110" cy="75" r="33" stroke="#d93a3a" stroke-dasharray="4 4"/>
-              <circle class="equi" cx="110" cy="75" r="48" stroke="#d93a3a" stroke-dasharray="4 4"/>
-              <g class="campo" stroke="#1f5fd6">
+              <circle class="equi" cx="110" cy="75" r="18" stroke="#f472b6" stroke-dasharray="4 4"/>
+              <circle class="equi" cx="110" cy="75" r="33" stroke="#f472b6" stroke-dasharray="4 4"/>
+              <circle class="equi" cx="110" cy="75" r="48" stroke="#f472b6" stroke-dasharray="4 4"/>
+              <g class="campo" stroke="#22d3ee">
                 <line x1="110" y1="75" x2="110" y2="15"/><line x1="110" y1="75" x2="110" y2="135"/>
                 <line x1="110" y1="75" x2="50" y2="75"/><line x1="110" y1="75" x2="170" y2="75"/>
                 <line x1="110" y1="75" x2="68" y2="33"/><line x1="110" y1="75" x2="152" y2="117"/>
                 <line x1="110" y1="75" x2="152" y2="33"/><line x1="110" y1="75" x2="68" y2="117"/>
               </g>
             </g>
-            <circle class="halo" cx="110" cy="75" r="10" fill="#1f5fd6" opacity=".18"/>
-            <circle class="carga" cx="110" cy="75" r="5" fill="#14213d"/>
+            <circle class="halo" cx="110" cy="75" r="10" fill="#22d3ee" opacity=".18"/>
+            <circle class="carga" cx="110" cy="75" r="5" fill="#e6edf7"/>
           </g>
           <rect class="zona-carga" x="0" y="0" width="220" height="150" fill="transparent" pointer-events="all"/>
         </svg>
         <h3>Campo eléctrico</h3>
-        <p>Las líneas de campo (azules) cortan a 90° las superficies equipotenciales (rojas).</p>
+        <p>Las líneas de campo son rectas que salen de la carga y las equipotenciales son circunferencias concéntricas: exactamente \(y=cx\) y \(x^2+y^2=k\), siempre a 90°.</p>
         <p class="app-hint">Arrastra la carga para moverla. Doble clic para centrarla.</p>
       </article>
 
       <article class="tarjeta app-card" data-app="fluidos">
         <svg viewBox="0 0 220 150" role="img" aria-label="Líneas de corriente y equipotenciales de un fluido">
-          <rect width="220" height="150" rx="10" fill="#f8fafc"/>
+          <rect width="220" height="150" rx="10" fill="#0b1220"/>
           <g fill="none" stroke-width="2">
-            <g class="flujo" stroke="#1f5fd6">
+            <g class="flujo" stroke="#22d3ee">
               <path d="M20 35 C80 35 140 35 200 35"/>
               <path d="M20 60 C80 60 140 60 200 60"/>
               <path d="M20 90 C80 90 140 90 200 90"/>
               <path d="M20 115 C80 115 140 115 200 115"/>
             </g>
-            <g class="equi-flujo" stroke="#d93a3a" stroke-dasharray="4 4">
+            <g class="equi-flujo" stroke="#f472b6" stroke-dasharray="4 4">
               <line x1="45" y1="18" x2="45" y2="132"/>
               <line x1="90" y1="18" x2="90" y2="132"/>
               <line x1="135" y1="18" x2="135" y2="132"/>
               <line x1="180" y1="18" x2="180" y2="132"/>
             </g>
           </g>
-          <g class="particulas" fill="#1f5fd6">
+          <g class="particulas" fill="#22d3ee">
             <circle class="particula" cx="0" cy="35" r="2.6" style="animation-delay:-.2s"/>
             <circle class="particula" cx="0" cy="60" r="2.6" style="animation-delay:-1.1s"/>
             <circle class="particula" cx="0" cy="90" r="2.6" style="animation-delay:-.6s"/>
@@ -249,24 +266,24 @@
         <svg viewBox="0 0 220 150" role="img" aria-label="Curvas de nivel y gradiente">
           <defs>
             <marker id="flechaGrad" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-              <path d="M0,0 L10,5 L0,10 z" fill="#d93a3a"/>
+              <path d="M0,0 L10,5 L0,10 z" fill="#f472b6"/>
             </marker>
           </defs>
-          <rect width="220" height="150" rx="10" fill="#f8fafc"/>
-          <g class="niveles" fill="none" stroke-width="2" stroke="#1f5fd6">
+          <rect width="220" height="150" rx="10" fill="#0b1220"/>
+          <g class="niveles" fill="none" stroke-width="2" stroke="#22d3ee">
             <ellipse cx="110" cy="75" rx="20" ry="14"/>
             <ellipse cx="110" cy="75" rx="38" ry="27"/>
             <ellipse cx="110" cy="75" rx="56" ry="40"/>
             <ellipse cx="110" cy="75" rx="74" ry="53"/>
           </g>
-          <g class="grad-grupo" stroke="#d93a3a" stroke-width="2">
+          <g class="grad-grupo" stroke="#f472b6" stroke-width="2">
             <line x1="110" y1="75" x2="110" y2="10" marker-end="url(#flechaGrad)"/>
             <line x1="110" y1="75" x2="110" y2="140" marker-end="url(#flechaGrad)"/>
             <line x1="110" y1="75" x2="30" y2="75" marker-end="url(#flechaGrad)"/>
             <line x1="110" y1="75" x2="190" y2="75" marker-end="url(#flechaGrad)"/>
           </g>
-          <circle cx="110" cy="75" r="4" fill="#14213d"/>
-          <circle class="marcador" cx="110" cy="75" r="3.5" fill="#d93a3a"/>
+          <circle cx="110" cy="75" r="4" fill="#e6edf7"/>
+          <circle class="marcador" cx="110" cy="75" r="3.5" fill="#f472b6"/>
         </svg>
         <h3>Mapas y relieve</h3>
         <p>El gradiente (máxima pendiente) es perpendicular a las curvas de nivel del terreno.</p>
@@ -277,107 +294,37 @@
         <svg viewBox="0 0 220 150" role="img" aria-label="Isotermas y flujo de calor">
           <defs>
             <linearGradient id="gradCalor" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#fde2e2"/>
-              <stop offset="1" stop-color="#e3ecfb"/>
+              <stop offset="0" stop-color="#3b1020"/>
+              <stop offset="1" stop-color="#0b1e3a"/>
             </linearGradient>
             <linearGradient id="gradCalorInv" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0" stop-color="#e3ecfb"/>
-              <stop offset="1" stop-color="#fde2e2"/>
+              <stop offset="0" stop-color="#0b1e3a"/>
+              <stop offset="1" stop-color="#3b1020"/>
             </linearGradient>
           </defs>
           <rect class="fondo-calor" width="220" height="150" rx="10" fill="url(#gradCalor)"/>
-          <g class="isotermas" fill="none" stroke-width="2" stroke="#d93a3a" stroke-dasharray="4 4">
+          <g class="isotermas" fill="none" stroke-width="2" stroke="#f472b6" stroke-dasharray="4 4">
             <line x1="45" y1="15" x2="45" y2="135"/>
             <line x1="90" y1="15" x2="90" y2="135"/>
             <line x1="135" y1="15" x2="135" y2="135"/>
             <line x1="180" y1="15" x2="180" y2="135"/>
           </g>
-          <g class="calor" fill="none" stroke-width="2" stroke="#1f5fd6">
+          <g class="calor" fill="none" stroke-width="2" stroke="#22d3ee">
             <line x1="15" y1="40" x2="205" y2="40"/>
             <line x1="15" y1="75" x2="205" y2="75"/>
             <line x1="15" y1="110" x2="205" y2="110"/>
           </g>
-          <g class="particulas-calor" fill="#d93a3a">
+          <g class="particulas-calor" fill="#f472b6">
             <circle class="particula-calor" cx="0" cy="40" r="2.6" style="animation-delay:-.2s"/>
             <circle class="particula-calor" cx="0" cy="75" r="2.6" style="animation-delay:-.9s"/>
             <circle class="particula-calor" cx="0" cy="110" r="2.6" style="animation-delay:-1.4s"/>
           </g>
-          <text class="et-caliente" x="8" y="15" font-size="10" font-weight="700" fill="#8b1e1e">Caliente</text>
-          <text class="et-frio" x="212" y="15" font-size="10" font-weight="700" fill="#1747a6" text-anchor="end">Frío</text>
+          <text class="et-caliente" x="8" y="15" font-size="8" font-weight="700" fill="#f9a8d4">Caliente</text>
+          <text class="et-frio" x="212" y="15" font-size="8" font-weight="700" fill="#7dd3fc" text-anchor="end">Frío</text>
         </svg>
         <h3>Termodinámica</h3>
         <p>El calor fluye perpendicularmente a las isotermas, de mayor a menor temperatura.</p>
         <button class="app-btn" data-accion="invertir-calor" aria-pressed="false">Invertir calor</button>
-      </article>
-    </div>
-  </section>
-
-  <!-- ============ PESTAÑA 4: RETO ============ -->
-  <section id="tab-reto" class="panel-tab">
-    <div class="tarjeta">
-      <span class="chip">Comprueba lo aprendido</span>
-      <h2>Reto interactivo</h2>
-      <p class="entrada">Responde las preguntas. La página te dirá al instante si acertaste y por qué.</p>
-      <div class="quiz-cabecera">
-        <span id="quizPuntaje" class="puntaje">0 / 5 correctas</span>
-        <button id="quizReiniciar">Reiniciar reto</button>
-      </div>
-    </div>
-
-    <div class="quiz" id="quiz">
-      <article class="tarjeta pregunta" data-correcta="0">
-        <p class="enunciado"><b>1.</b> ¿Cuál es la ecuación diferencial de la familia \(y = kx^2\)?</p>
-        <div class="opciones">
-          <button data-op="0">\( y' = \dfrac{2y}{x} \)</button>
-          <button data-op="1">\( y' = \dfrac{x}{2y} \)</button>
-          <button data-op="2">\( y' = 2kx \)</button>
-          <button data-op="3">\( y' = -\dfrac{2y}{x} \)</button>
-        </div>
-        <p class="explicacion" hidden>Derivamos y eliminamos \(k\): \(y'=2kx\) y \(k=\frac{y'}{2x}\), así que \(y'=\frac{2y}{x}\).</p>
-      </article>
-
-      <article class="tarjeta pregunta" data-correcta="2">
-        <p class="enunciado"><b>2.</b> Si una curva tiene pendiente \(m\), ¿qué pendiente tiene su trayectoria ortogonal?</p>
-        <div class="opciones">
-          <button data-op="0">\( m \)</button>
-          <button data-op="1">\( -m \)</button>
-          <button data-op="2">\( -\dfrac{1}{m} \)</button>
-          <button data-op="3">\( \dfrac{1}{m} \)</button>
-        </div>
-        <p class="explicacion" hidden>La perpendicularidad exige \(m_1m_2=-1\), por eso \(m_2=-1/m_1\).</p>
-      </article>
-
-      <article class="tarjeta pregunta" data-correcta="1">
-        <p class="enunciado"><b>3.</b> Al integrar la ecuación ortogonal se obtiene…</p>
-        <div class="opciones">
-          <button data-op="0">Otra familia de parábolas</button>
-          <button data-op="1">La familia de elipses \(x^2 + 2y^2 = C\)</button>
-          <button data-op="2">Rectas que pasan por el origen</button>
-          <button data-op="3">Hipérbolas \(xy = C\)</button>
-        </div>
-        <p class="explicacion" hidden>Al separar variables: \(2y\,dy=-x\,dx\), e integrando queda \(x^2+2y^2=C\), que son elipses.</p>
-      </article>
-
-      <article class="tarjeta pregunta" data-correcta="3">
-        <p class="enunciado"><b>4.</b> En el punto P la parábola tiene pendiente \(m_1 = 2\). ¿Cuánto vale \(m_2\)?</p>
-        <div class="opciones">
-          <button data-op="0">\( 2 \)</button>
-          <button data-op="1">\( 0.5 \)</button>
-          <button data-op="2">\( -2 \)</button>
-          <button data-op="3">\( -0.5 \)</button>
-        </div>
-        <p class="explicacion" hidden>\(m_2=-1/m_1=-1/2=-0.5\). Verifica el producto: \(2\cdot(-0.5)=-1\).</p>
-      </article>
-
-      <article class="tarjeta pregunta" data-correcta="1">
-        <p class="enunciado"><b>5.</b> Que \(\nabla F \cdot \nabla G = 0\) significa que…</p>
-        <div class="opciones">
-          <button data-op="0">Las curvas son paralelas</button>
-          <button data-op="1">Las curvas son perpendiculares</button>
-          <button data-op="2">Las curvas son tangentes</button>
-          <button data-op="3">Las curvas no se cortan</button>
-        </div>
-        <p class="explicacion" hidden>El gradiente es normal a la curva. Si los gradientes son ortogonales, las curvas también lo son.</p>
       </article>
     </div>
   </section>
@@ -398,16 +345,17 @@
 
     <h3>Guion sugerido</h3>
     <ol class="guion">
-      <li><b>Introducción (5 min):</b> plantea el problema en la pestaña “Método matemático”.</li>
-      <li><b>Desarrollo (10 min):</b> pulsa los pasos 1, 2 y 3 y explica cada fórmula.</li>
-      <li><b>Simulación (10 min):</b> en “Simulador visual” mueve \(k\), arrastra P y activa los gradientes.</li>
-      <li><b>Cierre (5 min):</b> usa “Aplicaciones” y termina con el “Reto interactivo”.</li>
+      <li><b>Introducción (5 min):</b> muestra “Aplicaciones” y explica que las líneas de campo y las equipotenciales se cruzan a 90°.</li>
+      <li><b>El método (10 min):</b> en “Método Matemático” pulsa los pasos 1, 2 y 3 y explica cada fórmula del libro.</li>
+      <li><b>Simulación (10 min):</b> en “Simulación Visual” carga el ejercicio base, mueve \(c\) y \(k\), arrastra P y muestra que \(m_1m_2=-1\).</li>
+      <li><b>Cierre (5 min):</b> vuelve a “Aplicaciones” y relaciona el resultado con la ingeniería.</li>
     </ol>
 
     <h3>Atajos de teclado</h3>
     <ul class="atajos">
-      <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> cambiar de pestaña</li>
+      <li><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> cambiar de pestaña</li>
       <li><kbd>→</kbd> / <kbd>←</kbd> avanzar o retroceder un paso del método</li>
+      <li><kbd>P</kbd> activar o salir del modo proyector</li>
       <li><kbd>F</kbd> pantalla completa</li>
       <li><kbd>?</kbd> abrir o cerrar esta ayuda</li>
     </ul>
@@ -415,17 +363,16 @@
     <h3>Plan de contingencia</h3>
     <ul class="atajos">
       <li>Sin internet: las librerías están en <code>libs/</code>, todo funciona igual.</li>
-      <li>Si el gráfico no responde: cambia de pestaña y vuelve a “Simulador visual”.</li>
+      <li>Si el gráfico no responde: cambia de pestaña y vuelve a “Simulación Visual”.</li>
       <li>Si una fórmula se ve rara: recarga la página; MathJax se carga localmente.</li>
     </ul>
-    <p class="nota-expositor"><b>Consejo:</b> usa <kbd>F</kbd> para proyectar el simulador a pantalla completa.</p>
+    <p class="nota-expositor"><b>Consejo:</b> usa <kbd>P</kbd> para proyectar solo el gráfico a pantalla completa.</p>
   </div>
 </div>
 
 <!-- Nuestro código, en el orden en que se necesita -->
 <script src="js/simulador.js"></script>
 <script src="js/metodo.js"></script>
-<script src="js/reto.js"></script>
 <script src="js/aplicaciones.js"></script>
 <script src="js/pestanas.js"></script>
 <script src="js/presentacion.js"></script>

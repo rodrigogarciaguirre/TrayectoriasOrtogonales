@@ -15,6 +15,7 @@ var Metodo = (function () {
   var bSiguiente = document.getElementById('bSiguiente');
   var bAnterior = document.getElementById('bAnterior');
   var bReiniciar = document.getElementById('bReiniciar');
+  var bCargarBase = document.getElementById('bCargarBase');
 
   var actual = 0;
 
@@ -66,6 +67,13 @@ var Metodo = (function () {
   if (bSiguiente) bSiguiente.addEventListener('click', function () { ir(actual + 1); });
   if (bAnterior) bAnterior.addEventListener('click', function () { ir(actual - 1); });
   if (bReiniciar) bReiniciar.addEventListener('click', function () { ir(0); });
+
+  if (bCargarBase) {
+    bCargarBase.addEventListener('click', function () {
+      if (typeof Pestanas !== 'undefined') Pestanas.abrir('simulador');
+      if (typeof Simulador !== 'undefined') Simulador.cargarBase();
+    });
+  }
 
   pintar();
 
